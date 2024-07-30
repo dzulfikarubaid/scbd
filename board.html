@@ -40,7 +40,7 @@
         console.log(score);
         document.getElementById(`score-${team}`).innerText = score;
         if(team == "team1"){
-            fetch('http://192.168.4.1/score-1', {
+            fetch('http://192.168.2.205/score-1', {
                 method: 'POST',
                 body: JSON.stringify({
                     score_team1: score
@@ -48,7 +48,7 @@
             });
         }
         if(team == "team2"){
-            fetch('http://192.168.4.1/score-2', {
+            fetch('http://192.168.2.205/score-2', {
                 method: 'POST',
                 body: JSON.stringify({
                     score_team2: score
@@ -67,7 +67,7 @@
         console.log(score);
         document.getElementById(`score-${team}`).innerText = score;
         if(team == "team1"){
-            fetch('http://192.168.4.1/score-1', {
+            fetch('http://192.168.2.205/score-1', {
                 method: 'POST',
                 body: JSON.stringify({
                     score_team1: score
@@ -75,7 +75,7 @@
             });
         }
         if(team == "team2"){
-            fetch('http://192.168.4.1/score-2', {
+            fetch('http://192.168.2.205/score-2', {
                 method: 'POST',
                 body: JSON.stringify({
                     score_team2: score
