@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard Example App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col justify-center items-center w-full h-screen bg-black text-white p-5 gap-5">
+    <h1 class="text-2xl font-bold">Scoreboard Example App</h1>
+
+    <p class="text-center">Hubungkan dengan wifi scoreboard untuk membuat game baru</p>
+    <button class=" p-2 bg-green-500 rounded-xl" onclick="checkConnection()" id="createGame">New Game</button>
+
+</body>
+<script>
+    async function checkConnection() {
+        const response = await fetch('http://192.168.4.1', {
+            method: 'GET',
+        });
+        const code = await response.status;
+   
+        if(code == 200) {
+            window.location.href = '/input.html';
+        }
+        else{
+            alert("Error: ");
+        }
+    }
+</script>
+
+</html>

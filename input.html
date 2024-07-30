@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col  w-full h-screen bg-black text-white p-5 gap-5">
+
+<button onclick="window.history.back()" class="flex flex-row w-full justify-left text-green-500">Back</button>
+<h1 class="text-2xl text-center font-bold my-10">Please Fill Out The Details!</h1>
+        <label for="name1">Team 1</label>
+        <input class="rounded-xl w-full p-2 text-black" type="text" name="name1" placeholder="Team Name (home)">
+        <label for="name2">Team 2</label>
+        <input class="rounded-xl p-2 text-black"  type="text" name="name2" placeholder="Team Name (away)">
+        <label for="duration">Duration</label>
+        <input class="rounded-xl p-2 text-black"  type="number" name="duration" placeholder="Duration (minutes)">
+
+        <button class=" p-2 bg-green-500 rounded-xl" onclick="createGame()" id="createGame">Create Game</button>
+    
+</body>
+<script>
+    async function createGame() {
+
+        const name1 = document.querySelector('input[name="name1"]').value;
+        const name2 = document.querySelector('input[name="name2"]').value;
+        const duration = document.querySelector('input[name="duration"]').value;
+       
+
+
+        if(name1 == "" || name2 == "" || duration == 0){
+            alert("Please fill out all the details!");
+            return;
+        }
+        if(name1.length >20 || name1.length <5){
+            alert("Team name must be between 5 and 20 characters!");
+            return
+        }
+        if(name2.length >20 || name2.length <5){
+            alert("Team name must be between 5 and 20 characters!");
+            return
+        }
+        await localStorage.setItem("name1", name1);
+        await localStorage.setItem("name2", name2);
+        await localStorage.setItem("duration", duration);
+        window.location.href = "/board.html"
+
+
+        const response = await fetch('http://192.168.4.1/create-game', {
+            method: 'POST',
+            body: JSON.stringify({
+                team1: name1,
+                team2: name2,
+                duration: duration
+            }),
+        });
+    }
+</script>
+</html>

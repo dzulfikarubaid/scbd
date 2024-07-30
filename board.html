@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col  w-full h-screen bg-black text-white p-5 gap-5 ">
+  <button onclick="window.history.back()" class="flex flex-row w-full justify-left text-green-500">Back</button>
+  
+  <h1 class="text-xl flex flex-row-reverse text-red-500" id="duration"></h1>
+  <div class="flex flex-row justify-between items-center text-4xl font-bold">
+  <h1 id="team1"></h1>
+  <div class="flex flex-col  items-center">
+  <button onclick="addScore('team1')">+</button>
+  <h1 class="text-white text-left" id="score-team1">0</h1>
+  <button onclick="subScore('team1')">-</button></div>
+  </div>
+  <div class="flex flex-row justify-between items-center text-4xl font-bold">
+  <h1 id="team2"></h1>
+  <div class="flex flex-col  items-center">
+  <button onclick="addScore('team2')">+</button>
+  <h1 class="text-white text-left" id="score-team2">0</h1>
+  <button onclick="subScore('team2')">-</button></div>
+  </div>
+  
+
+</body>
+
+<script>
+
+    async function addScore(team) {
+        var score = document.getElementById(`score-${team}`).innerText;
+        score++;
+        if(score > 999){
+            return;
+        }
+        console.log(score);
+        document.getElementById(`score-${team}`).innerText = score;
+        if(team == "team1"){
+            fetch('http://192.168.4.1/score-1', {
+                method: 'POST',
+                body: JSON.stringify({
+                    score_team1: score
+                }),
+            });
+        }
+        if(team == "team2"){
+            fetch('http://192.168.4.1/score-2', {
+                method: 'POST',
+                body: JSON.stringify({
+                    score_team2: score
+                }),
+            });
+        }
+      
+    }
+
+    async function subScore(team) {
+        var score = document.getElementById(`score-${team}`).innerText;
+        if (score == 0) {
+            return;
+        }
+        score--;
+        console.log(score);
+        document.getElementById(`score-${team}`).innerText = score;
+        if(team == "team1"){
+            fetch('http://192.168.4.1/score-1', {
+                method: 'POST',
+                body: JSON.stringify({
+                    score_team1: score
+                }),
+            });
+        }
+        if(team == "team2"){
+            fetch('http://192.168.4.1/score-2', {
+                method: 'POST',
+                body: JSON.stringify({
+                    score_team2: score
+                }),
+            });
+        }
+    }
+
+    const team1 = localStorage.getItem("name1");
+    const team2 = localStorage.getItem("name2");
+    const duration = localStorage.getItem("duration");
+    var timeLimitInMinutes = duration;
+    var timeLimitInSeconds = timeLimitInMinutes * 60;
+    var timerElement = document.getElementById('duration');
+
+    function startTimer() {
+        timeLimitInSeconds--;
+        var minutes = Math.floor(timeLimitInSeconds / 60);
+        var seconds = timeLimitInSeconds % 60;
+
+        if (timeLimitInSeconds < 0) {
+            timerElement.textContent = '00:00';
+            clearInterval(timerInterval);
+            return;
+        }
+
+        if (minutes < 10) {
+            minutes = '0' + minutes;
+        }
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+
+        timerElement.textContent = minutes + ':' + seconds;
+    }
+
+    var timerInterval = setInterval(startTimer, 1000);
+    document.getElementById('duration').innerText = duration;
+    document.getElementById('team1').innerText = team1;
+    document.getElementById('team2').innerText = team2;
+
+</script>
+
+</html>
